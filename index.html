@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>거실 책장 2730/라운드/레일1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF1F2; --ink:#1B252A; --muted:#5B6A71; --line:#CBD3D7; --stage:#E3E8EA; --accent:#B8372F; --chip:#FFFFFF; --on:#FFFFFF;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#14191C; --ink:#E6ECEE; --muted:#9AA7AD; --line:#2E383D; --stage:#232B30; --accent:#E0655C; --chip:#1C2327; --on:#14191C;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#14191C; --ink:#E6ECEE; --muted:#9AA7AD; --line:#2E383D; --stage:#232B30; --accent:#E0655C; --chip:#1C2327; --on:#14191C;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+body{
+  margin:0;height:100%;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  font-size:15px;line-height:1.5;display:flex;flex-direction:column;
+}
+header{padding:16px 20px 10px;display:flex;flex-wrap:wrap;gap:10px 24px;align-items:flex-end;justify-content:space-between}
+h1{margin:0;font-size:20px;font-weight:600;letter-spacing:-0.01em}
+.note{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.plans{display:flex;flex-wrap:wrap;gap:6px}
+button{
+  font:inherit;font-size:14px;color:var(--ink);background:var(--chip);
+  border:1px solid var(--line);border-radius:6px;padding:7px 12px;cursor:pointer;
+}
+button:hover{border-color:var(--muted)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.plans button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on)}
+.spec{
+  margin:0;padding:10px 20px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px 24px;font-size:14px;
+}
+.spec div{display:flex;gap:10px}
+.spec dt{color:var(--muted);flex:none;min-width:4.5em}
+.spec dd{margin:0;font-weight:500}
+#stage{position:relative;flex:1;min-height:320px;background:var(--stage);overflow:hidden;touch-action:none;cursor:grab}
+#stage canvas{display:block}
+.lab{
+  position:absolute;left:0;top:0;font-size:12px;line-height:1.4;padding:1px 6px;border-radius:4px;
+  background:rgba(255,255,255,0.9);color:#1B252A;white-space:nowrap;pointer-events:none;transform:translate(-50%,-50%);
+}
+footer{padding:10px 20px 14px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.legend{margin-left:auto;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.sw{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:-1px;margin-right:6px}
+@media (max-width:560px){
+  header{padding:12px 14px 8px} .spec{padding:8px 14px} footer{padding:8px 14px 12px} .legend{margin-left:0}
+}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>거실 책장 2730/라운드/레일1</h1>
+    <p class="note">전체 폭 2730, 레일 1줄, 오른쪽 앞 모서리 반지름 100 구성입니다. 에어컨 옆에 약 20cm 여유를 두어 필터를 옆으로 빼서 교체할 수 있습니다. 치수는 도면에서 역산한 추정값이며 단위는 mm입니다. 색상은 라이트 메이플 기준입니다.</p>
+  </div>
+</header>
+<dl class="spec">
+  <div><dt>구성</dt><dd id="sComp"></dd></div>
+  <div><dt>전면장</dt><dd id="sSl"></dd></div>
+  <div><dt>깊이</dt><dd id="sDepth"></dd></div>
+  <div><dt>특징</dt><dd id="sNote"></dd></div>
+</dl>
+<div id="stage" aria-label="책장 3D 모형. 드래그하면 회전합니다."></div>
+<footer>
+  <div class="group" role="group" aria-label="전면장 상태">
+    <button id="bOpen">TV 보임</button>
+    <button id="bClose">TV 가림</button>
+  </div>
+  <div class="group" role="group" aria-label="보는 방향">
+    <button data-view="-0.6,0.2">왼쪽에서</button>
+    <button data-view="0,0.08">정면</button>
+    <button data-view="0.6,0.2">오른쪽에서</button>
+    <button data-view="1.45,0.1">현관 쪽에서</button>
+    <button data-view="0.25,1.05">위에서</button>
+  </div>
+  <div class="legend">
+    <span><span class="sw" style="background:#D8C7AE"></span>전면 레일</span>
+    <span><span class="sw" style="background:#C4AF92"></span>후면 레일</span>
+    <span>드래그해서 회전</span>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var PLANS={
+    'plan-3':{round:false,corner:0.1,D:0.47,L:0.657,w:0.657,sw:'657',swR:'757',comp:'고정 657 / TV장 1316 / 고정 757 (끝 100은 곡선)',sl:'657 × 2짝, 레일 1줄',depth:'470',note:'오른쪽 앞 모서리 반지름 100. 끝 칸은 맨 윗칸만 옆을 막고, 아래는 레일을 가리는 낮은 턱(약 80)만 둠'},
+  };
+  var stage=document.getElementById('stage');
+  if(!window.THREE){stage.textContent='3D 모형을 불러오지 못했습니다. 네트워크 연결을 확인한 뒤 새로 고침해 주세요.';stage.style.padding='24px';return;}
+  var scene=new THREE.Scene();
+  var cam=new THREE.PerspectiveCamera(32,1,0.1,60);
+  var ren=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  ren.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  stage.appendChild(ren.domElement);
+  scene.add(new THREE.AmbientLight(0xffffff,0.78));
+  var dl=new THREE.DirectionalLight(0xffffff,0.5);dl.position.set(3,4,5);scene.add(dl);
+  var mats={};
+  function mat(c){if(!mats[c])mats[c]=new THREE.MeshLambertMaterial({color:c});return mats[c];}
+  var EM=new THREE.LineBasicMaterial({color:0x6b665c}),DM=new THREE.LineBasicMaterial({color:0xB8372F});
+  function B(p,w,h,d,x,y,z,c,ne){var g=new THREE.BoxGeometry(w,h,d);var m=new THREE.Mesh(g,mat(c));m.position.set(x+w/2,y+h/2,z+d/2);if(!ne)m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g),EM));p.add(m);return m;}
+  var WH=0xE9DFD0,W2=0xDFD3C1,W=2.73,C=1.316;
+  var BK=[0xE2574C,0x3F8FD6,0xF2B63C,0x4CAF7A,0x9A6BD0,0xF08A5D,0x2FA3A0];
+  function slider(par,w,z,c,o){
+    var g=new THREE.Group();B(g,w,1.64,0.012,0,0,0,c);B(g,0.018,1.64,0.06,0,0,0,c);B(g,0.018,1.64,0.06,w-0.018,0,0,c);
+    for(var i=0;i<5;i++){var y=i*0.32;B(g,w-0.036,0.018,0.06,0.018,y,0,c);B(g,w-0.036,0.045,0.006,0.018,y+0.018,0.054,c);
+      var n=Math.max(1,Math.floor((w-0.06)/0.185)),sp=(w-0.036)/n;
+      for(var k=0;k<n;k++)B(g,0.15,0.2,0.01,0.018+sp*k+(sp-0.15)/2,y+0.02,0.03,BK[(i*3+k*2+o)%7],true);}
+    B(g,w,0.018,0.06,0,1.622,0,c);g.position.set(0,0.14,z);par.add(g);return g;
+  }
+  function rc(w,d,r){var s=new THREE.Shape();s.moveTo(0,0);s.lineTo(w,0);s.lineTo(w,d-r);s.absarc(w-r,d-r,r,0,Math.PI/2,false);s.lineTo(0,d);s.lineTo(0,0);return s;}
+  function cp(r,d){var s=new THREE.Shape();s.moveTo(r,-d);s.lineTo(r,0);s.absarc(0,0,r,0,Math.PI/2,false);s.lineTo(0,r-0.018);s.absarc(0,0,r-0.018,Math.PI/2,0,true);s.lineTo(r-0.018,-d);s.lineTo(r,-d);return s;}
+  function ext(s,h,x,y,z,c){var g=new THREE.ExtrudeGeometry(s,{depth:h,bevelEnabled:false,curveSegments:16});g.rotateX(Math.PI/2);var m=new THREE.Mesh(g,mat(c));m.position.set(x,y,z);m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g,30),EM));G.add(m);return m;}
+  var G=null,P=[],LB=[],cur='plan-1',t=0,tg=0,th=0.5,ph=0.2,R=6.6,anim=false,cw=680,ch=460;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function lab(s,p,x){var d=document.createElement('div');d.className='lab';d.textContent=s;stage.appendChild(d);var l={el:d,p:p};if(x)for(var k in x)l[k]=x[k];LB.push(l);}
+  function build(id){
+    cur=id;var o=PLANS[id];W=o.W||2.73;
+    if(G)scene.remove(G);LB.forEach(function(l){l.el.remove();});LB=[];P=[];G=new THREE.Group();scene.add(G);
+    var D=o.D,L=o.L,BW=o.round?W-0.347:W,x0=L+0.018,WL=W-3.45,mid=L+C/2;
+    B(G,3.45,2.24,0.02,WL,0,-0.02,0xE4E0D8,true);
+    B(G,4.6,0.02,2.3,WL-0.3,-0.02,-0.02,0xC9B99E,true);
+    var ac=B(G,0.46,1.9,0.3,WL+0.04,0,0.12,0xFAFAF8);ac.rotation.y=Math.PI/4;
+    if(o.corner)ext(rc(BW,D,o.corner),0.13,0,0.13,0,W2);else B(G,BW,0.13,D,0,0,0,W2);
+    B(G,0.018,2.118,D,-0.018,0,0,WH);
+    B(G,0.018,1.66,0.36,0,0.13,0,WH);
+    B(G,0.036,1.66,0.36,L-0.018,0.13,0,WH);
+    B(G,0.036,1.66,0.36,L+C-0.018,0.13,0,WH);
+    var HS=[0.45,0.768,1.086,1.404];
+    if(!o.round){
+      B(G,W-0.36,1.66,0.01,0,0.13,0,W2,true);
+      B(G,0.36,0.92,0.01,W-0.36,0.13,0,W2,true);
+      B(G,0.36,0.23,0.01,W-0.36,1.56,0,W2,true);
+      if(o.corner){var cs=cp(o.corner,D-o.corner);ext(cs,0.08,W-o.corner,0.21,D-o.corner,WH);ext(cs,0.23,W-o.corner,1.79,D-o.corner,WH);}else{B(G,0.018,1.05,D,W-0.018,0,0,WH);
+      B(G,0.018,0.558,D,W-0.018,1.56,0,WH);
+      B(G,0.018,0.51,0.11,W-0.018,1.05,0.36,WH);}
+      B(G,0.018,1.66,0.36,L/2-0.009,0.13,0,WH);
+      B(G,0.018,1.66,0.36,W-0.378,0.13,0,WH);
+      HS.forEach(function(y){B(G,L-0.036,0.018,0.34,0.018,y,0.01,WH);B(G,W-0.378-(L+C+0.018),0.018,0.34,L+C+0.018,y,0.01,WH);});
+      [0.45,0.768,1.032,1.56].forEach(function(y){if(o.corner)ext(rc(0.36,0.36,o.corner),0.018,W-0.36,y+0.018,0,WH);else B(G,0.342,0.018,0.35,W-0.36,y,0.01,WH);});
+    }else{
+      B(G,BW,1.66,0.01,0,0.13,0,W2,true);
+      B(G,0.018,2.118,D,BW-0.018,0,0,WH);
+      HS.forEach(function(y){B(G,L-0.036,0.018,0.34,0.018,y,0.01,WH);B(G,L-0.036,0.018,0.34,L+C+0.018,y,0.01,WH);});
+      var sh=new THREE.Shape();sh.moveTo(0,0);sh.lineTo(0,D);sh.absellipse(0,0,0.347,D,Math.PI/2,0,true);sh.lineTo(0,0);
+      var sg=new THREE.ExtrudeGeometry(sh,{depth:0.018,bevelEnabled:false,curveSegments:24});sg.rotateX(Math.PI/2);
+      [0.13,0.45,0.768,1.05,1.79,2.118].forEach(function(y){var m=new THREE.Mesh(sg,mat(WH));m.position.set(BW,y,0);m.add(new THREE.LineSegments(new THREE.EdgesGeometry(sg,30),EM));G.add(m);});
+      B(G,0.347,0.92,0.01,BW,0.13,0,W2,true);
+    }
+    B(G,1.28,0.018,0.35,x0,0.456,0.01,WH);
+    B(G,1.28,0.018,0.35,x0,0.554,0.01,WH);
+    B(G,0.9,0.06,0.1,x0+0.19,0.476,0.2,0x3a3a3e);
+    B(G,1.28,0.018,0.35,x0,1.442,0.01,WH);
+    B(G,0.018,0.33,0.35,x0+0.4207,1.46,0.01,WH);
+    B(G,0.018,0.33,0.35,x0+0.8473,1.46,0.01,WH);
+    B(G,0.636,0.306,0.02,x0+0.002,0.142,0.34,W2);
+    B(G,0.636,0.306,0.02,x0+0.642,0.142,0.34,W2);
+    B(G,1.24,0.72,0.04,x0+0.02,0.622,0.2,0x1c1c1e);
+    B(G,0.4,0.05,0.2,x0+0.44,0.572,0.12,0x2a2a2c);
+    if(o.corner)ext(rc(BW,D-0.02,o.corner),0.328,0,2.118,0,WH);else B(G,BW,0.328,D-0.02,0,1.79,0,WH);
+    var DW=BW-(o.corner||0);for(var i=0;i<6;i++)B(G,DW/6-0.006,0.26,0.02,i*DW/6+0.003,1.845,D-0.02,W2);
+    var RZ=(o.round&&o.k!=='S')?[0.385,0.455]:[0.385];RZ.forEach(function(z){B(G,DW,0.012,0.026,0,0.13,z+0.017,0x4a4d52);B(G,DW,0.012,0.026,0,1.778,z+0.017,0x4a4d52);});
+    lab('상부 레일',[DW*0.5,1.76,D]);lab('하부 레일',[DW*0.5,0.1,D]);
+    B(G,0.26,0.16,0.025,W-0.34,1.36,0.011,0xffffff);
+    B(G,0.11,0.07,0.004,W-0.32,1.42,0.036,0x30343a,true);
+    B(G,0.075,0.125,0.012,W-0.175,1.135,0.011,0xffffff);
+    B(G,0.075,0.13,0.012,W-0.325,1.115,0.011,0xEFE6B8);
+    if(!o.round){
+      var q=o.w||0.66,a=slider(G,q,0.385,0xD8C7AE,0),b=slider(G,q,0.385,0xD8C7AE,3);
+      P=[[a,0,mid-q],[b,W-(o.corner||0)-q,mid]];
+      lab('전면장 '+Math.round(q*1000),null,{g:a,w:q,gy:1.72,gz:0.46});lab('전면장 '+Math.round(q*1000),null,{g:b,w:q,gy:1.72,gz:0.46});
+    }else{
+      var w=o.w,n=o.wl||Math.round(w*1000);
+      if(o.k==='S'){var s1=slider(G,w,0.385,0xD8C7AE,0),s2=slider(G,w,0.385,0xD8C7AE,3);P=[[s1,0,mid-w],[s2,BW-w,mid]];lab('전면장 '+n,null,{g:s1,w:w,gy:1.72,gz:0.46});lab('전면장 '+n,null,{g:s2,w:w,gy:1.72,gz:0.46});}else{
+      var bl=slider(G,w,0.385,0xC4AF92,2),br=slider(G,w,0.385,0xC4AF92,5),fl=slider(G,w,0.455,0xD8C7AE,0),fr=slider(G,w,0.455,0xD8C7AE,3);
+      if(o.k==='A')P=[[fl,0,mid-w],[fr,BW-w,mid],[bl,0,L],[br,BW-w,L+C-w]];
+      else if(o.k==='B')P=[[fl,0,mid-2*w],[fr,BW-w,mid+w],[bl,0,mid-w],[br,BW-w,mid]];
+      else if(o.k==='D')P=[[fl,L-w,mid-w],[fr,L+C,mid],[bl,0,mid-2*w],[br,BW-w,mid+w]];
+      else P=[[fl,0,L+w],[fr,BW-w,mid],[bl,0,L],[br,BW-w,mid+w]];
+      lab('전면 '+n,null,{g:fl,w:w,gy:1.72,gz:0.53});lab('전면 '+n,null,{g:fr,w:w,gy:1.72,gz:0.53});
+      lab('후면 '+n,null,{g:bl,w:w,gy:1.4,gz:0.46});lab('후면 '+n,null,{g:br,w:w,gy:1.4,gz:0.46});}
+    }
+    var pts=[];function seg(p,q){pts.push(new THREE.Vector3(p[0],p[1],p[2]),new THREE.Vector3(q[0],q[1],q[2]));}
+    var Y1=2.2,Y2=2.36,Z=D;
+    seg([0,Y1,Z],[W,Y1,Z]);(o.round?[0,L,L+C,BW,W]:[0,L,L+C,W]).forEach(function(x){seg([x,Y1-0.035,Z],[x,Y1+0.035,Z]);});
+    seg([0,Y2,Z],[W,Y2,Z]);seg([0,Y2-0.035,Z],[0,Y2+0.035,Z]);seg([W,Y2-0.035,Z],[W,Y2+0.035,Z]);
+    seg([-0.09,0,Z],[-0.09,2.118,Z]);seg([-0.125,0,Z],[-0.055,0,Z]);seg([-0.125,2.118,Z],[-0.055,2.118,Z]);
+    seg([-0.09,0.005,0],[-0.09,0.005,D]);
+    G.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),DM));
+    var sw=o.sw||(o.round?'533':'707');
+    lab('전체 폭 '+(o.total||'2730'),[W/2,Y2+0.07,Z]);
+    lab(sw,[L/2,Y1+0.07,Z]);lab('TV장 1316',[mid,Y1+0.07,Z]);lab(o.swR||sw,[(L+C+BW)/2,Y1+0.07,Z]);
+    if(o.round)lab('347',[BW+0.17,Y1+0.07,0.2]);
+    lab('높이 2118',[-0.09,1.2,Z]);lab('깊이 '+o.depth,[-0.09,0.06,D/2]);
+    lab(o.gap||'에어컨 옆 여유 약 180',[-0.12,0.75,D+0.1]);
+    lab('TV 1240 × 770',[mid,1.0,0.26],{tv:1});
+    if(o.round)lab('인터폰과 스위치',[W-0.2,1.62,0.3]);
+    else{lab(o.corner?'모서리 R100, 가운데 칸 오픈':'측판 따냄',[W+0.12,1.66,0.2]);lab('인터폰',[W+0.1,1.44,0.02]);lab('스위치',[W+0.1,1.2,0.02]);}
+    document.getElementById('sComp').textContent=o.comp;
+    document.getElementById('sSl').textContent=o.sl;
+    document.getElementById('sDepth').textContent=o.depth;
+    document.getElementById('sNote').textContent=o.note;
+    document.querySelectorAll('[data-plan]').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-plan')===id?'true':'false');});
+    draw();
+  }
+  var v=new THREE.Vector3();
+  function draw(){
+    var tx=W/2-0.15,ty=1.12,tz=0.22;
+    cam.position.set(tx+R*Math.sin(th)*Math.cos(ph),ty+R*Math.sin(ph),tz+R*Math.cos(th)*Math.cos(ph));cam.lookAt(tx,ty,tz);
+    var e=t*t*(3-2*t);P.forEach(function(p){p[0].position.x=p[1]+(p[2]-p[1])*e;});
+    ren.render(scene,cam);
+    LB.forEach(function(l){
+      if(l.g)v.set(l.g.position.x+l.w/2,l.gy,l.gz);else v.set(l.p[0],l.p[1],l.p[2]);
+      v.project(cam);
+      l.el.style.left=Math.round((v.x+1)/2*cw)+'px';l.el.style.top=Math.round((1-v.y)/2*ch)+'px';
+      l.el.style.visibility=(l.tv&&t>0.4)?'hidden':'visible';
+    });
+  }
+  function size(){
+    cw=stage.clientWidth||680;ch=stage.clientHeight||460;
+    ren.setSize(cw,ch);cam.aspect=cw/ch;cam.updateProjectionMatrix();
+    R=Math.min(16,Math.max(5.8,7.6/cam.aspect));draw();
+  }
+  function step(){var d=tg-t;if(Math.abs(d)<0.02){t=tg;anim=false;draw();return;}t+=(d>0?1:-1)*0.03;draw();requestAnimationFrame(step);}
+  function go(x){
+    tg=x;
+    document.getElementById('bOpen').setAttribute('aria-pressed',x?'false':'true');
+    document.getElementById('bClose').setAttribute('aria-pressed',x?'true':'false');
+    if(reduce){t=tg;draw();return;}
+    if(!anim){anim=true;requestAnimationFrame(step);}
+  }
+  document.getElementById('bOpen').addEventListener('click',function(){go(0);});
+  document.getElementById('bClose').addEventListener('click',function(){go(1);});
+  document.querySelectorAll('[data-plan]').forEach(function(b){b.addEventListener('click',function(){var id=b.getAttribute('data-plan');if(location.hash!=='#'+id)location.hash=id;else build(id);});});
+  document.querySelectorAll('[data-view]').forEach(function(b){b.addEventListener('click',function(){var a=b.getAttribute('data-view').split(',');th=parseFloat(a[0]);ph=parseFloat(a[1]);draw();});});
+  var dr=false,lx=0,ly=0;
+  stage.addEventListener('pointerdown',function(e){dr=true;lx=e.clientX;ly=e.clientY;try{stage.setPointerCapture(e.pointerId);}catch(err){}stage.style.cursor='grabbing';});
+  stage.addEventListener('pointermove',function(e){if(!dr)return;th-=(e.clientX-lx)*0.008;ph+=(e.clientY-ly)*0.006;th=Math.max(-1.5,Math.min(1.55,th));ph=Math.max(0.02,Math.min(1.3,ph));lx=e.clientX;ly=e.clientY;draw();});
+  function up(){dr=false;stage.style.cursor='grab';}
+  stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',up);
+  function route(){var id=(location.hash||'').replace('#','');build('plan-3');}
+  window.addEventListener('hashchange',route);
+  window.addEventListener('resize',size);
+  cw=stage.clientWidth||680;ch=stage.clientHeight||460;
+  ren.setSize(cw,ch);cam.aspect=cw/ch;cam.updateProjectionMatrix();
+  R=Math.min(16,Math.max(5.8,7.6/cam.aspect));
+  go(0);route();
+})();
+</script>
+</body>
+</html>
